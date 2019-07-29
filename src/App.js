@@ -4,6 +4,8 @@ import Lorem from "./content/Lorem";
 const App = () => {
   const [foldAngle, setFoldAngle] = useState(0);
 
+  const isFrontFaceUp = foldAngle <= 90;
+
   return (
     <>
       <div
@@ -25,13 +27,14 @@ const App = () => {
         <div
           id="page-2"
           style={{
-            background: "yellow",
-            gridArea: "1 / 2 / 2 / 3",
-            zIndex: foldAngle < 90 ? 101 : 100,
+            background: isFrontFaceUp ? "yellow" : "tomato",
+            gridArea: isFrontFaceUp ? "1 / 2 / 2 / 3" : "1 / 1 / 2 / 2",
 
             // Apply the folding rotation:
-            transform: `rotateY(${foldAngle}deg)`,
-            transformOrigin: "left top",
+            transform: `rotateY(${
+              isFrontFaceUp ? foldAngle : 180 - foldAngle
+            }deg)`,
+            transformOrigin: isFrontFaceUp ? "left top" : "right top",
 
             // This optional prop can improve
             // performance, by letting the
@@ -39,29 +42,14 @@ const App = () => {
             willChange: "transform"
           }}
         >
-          <Lorem name="Lorem 2" />
+          {foldAngle <= 90 ? (
+            <Lorem name="Lorem 2" />
+          ) : (
+            <Lorem name="Lorem 3" />
+          )}
         </div>
         <div
           id="page-3"
-          style={{
-            background: "tomato",
-            zIndex: 100,
-            gridArea: "1 / 1 / 2 / 2",
-
-            // Apply the folding rotation:
-            transform: `rotateY(${180 - foldAngle}deg)`,
-            transformOrigin: "right top",
-
-            // This optional prop can improve
-            // performance, by letting the
-            // browser optimize it:
-            willChange: "transform"
-          }}
-        >
-          <Lorem name="Lorem 3" />
-        </div>
-        <div
-          id="page-4"
           style={{ background: "rebeccapurple", gridArea: "1 / 2 / 2 / 3" }}
         >
           <Lorem name="Lorem 4" />
